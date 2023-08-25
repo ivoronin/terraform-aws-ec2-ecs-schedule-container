@@ -1,5 +1,9 @@
 data "aws_region" "current" {}
 
+resource "aws_ecs_cluster" "cluster" {
+  name = "${var.name_prefix}-cluster"
+}
+
 resource "aws_ecs_task_definition" "task" {
   family                   = var.name_prefix
   requires_compatibilities = ["FARGATE"]
@@ -44,7 +48,7 @@ resource "aws_cloudwatch_event_rule" "rule" {
 
 resource "aws_cloudwatch_event_target" "target" {
   rule = aws_cloudwatch_event_rule.rule.name
-  arn  = var.ecs_cluster_arn
+  arn  = aws_ecs_cluster.cluster.arn
 
   role_arn = aws_iam_role.scheduler.arn
 
