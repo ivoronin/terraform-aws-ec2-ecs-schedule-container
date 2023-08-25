@@ -14,7 +14,7 @@ module "backup" {
 
   efs_volumes = [{
     name           = "data"
-    file_system_id = aws_efs_file_system.primary.id
+    file_system_id = aws_efs_file_system.data.id
   }]
 
   container_definition = {
@@ -28,7 +28,7 @@ module "backup" {
     ]
 
     mountPoints = [{
-        "containerPath" : local.backup_mount_point,
+        "containerPath" : "/data",
         "sourceVolume" : "data"
       }]
 
